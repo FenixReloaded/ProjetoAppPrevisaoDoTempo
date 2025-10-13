@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="city_label">Cidade</string>
+    <string name="current_weather">Clima atual</string>
+    <string name="details">Detalhes</string>
+    <string name="settings">Configurações</string>
+    <string name="select_city">Selecionar cidade</string>
+    <string name="select_period">Selecionar período</string>
+    <string name="weekly">Semanal</string>
+    <string name="biweekly">Quinzenal</string>
+    <string name="monthly">Mensal</string>
+    <string name="save">Salvar</string>
+    <string name="search">Buscar</string>
+}
