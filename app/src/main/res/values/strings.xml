@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ClimaSphere</string>
+
+    <string-array name="languages_array">
+        <item>Português (Brasil)</item>
+        <item>Inglês (EUA)</item>
+        <item>Espanhol</item>
+    </string-array>
+</resources>
