@@ -24,7 +24,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="330dp"
         android:layout_weight="0"
         android:gravity="center"
@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/tv_city_temp"
-            android:layout_width="230dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:shadowColor="#80000000"
@@ -51,7 +51,7 @@
             android:text="São Paulo, BR\n25°C"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="36sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -63,7 +63,10 @@
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
         android:text="Detalhes da Previsão"
-        android:textColor="#000000" />
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_configuracao"
@@ -73,7 +76,10 @@
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
         android:text="Configuração de Localização"
-        android:textColor="#000000" />
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_mudar_cidade"
@@ -83,7 +89,10 @@
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
         android:text="Seleção de Cidade"
-        android:textColor="#000000" />
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_selecao_periodo"
@@ -91,7 +100,10 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
-        android:text="Seleção de Período (Semanal/Mensal)"
-        android:textColor="#000000" />
+        android:text="Seleção de Período de Amostra"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

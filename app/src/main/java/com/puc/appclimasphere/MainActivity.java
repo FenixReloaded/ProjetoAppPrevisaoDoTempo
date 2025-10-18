@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvCityTemp, tvWeatherIcon;
     private LinearLayout mainLayout;
     private WeatherResponse cachedWeatherData;
+    private String currentCity = "São Paulo";
+    private int currentBackgroundId = R.drawable.gradient_dia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         tvWeatherIcon = findViewById(R.id.tv_weather_icon);
         mainLayout = findViewById(R.id.main);
 
-        fetchWeatherData("Nova York");
+        //fetchWeatherData("Nova York");
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             if(cachedWeatherData != null){
             Intent intent = new Intent(MainActivity.this, DetalhesActivity.class);
             intent.putExtra("WEATHER_DATA", cachedWeatherData);
+            intent.putExtra("TEMA_FUNDO", currentBackgroundId);
             startActivity(intent);
         }else{
             Toast.makeText(MainActivity.this, "Aguarde, buscando dados do clima...", Toast.LENGTH_SHORT).show();
@@ -65,20 +68,29 @@ public class MainActivity extends AppCompatActivity {
         btnConfiguracao = findViewById(R.id.btn_configuracao);
         btnConfiguracao.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ConfiguracaoActivity.class);
+            intent.putExtra("TEMA_FUNDO", currentBackgroundId);
             startActivity(intent);
         });
 
         btnMudarCidade = findViewById(R.id.btn_mudar_cidade);
         btnMudarCidade.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SelecaoCidadeActivity.class);
+            intent.putExtra("TEMA_FUNDO", currentBackgroundId);
             startActivity(intent);
         });
 
         btnSelecaoPeriodo = findViewById(R.id.btn_selecao_periodo);
         btnSelecaoPeriodo.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SelecaoPeriodoActivity.class);
+            intent.putExtra("TEMA_FUNDO", currentBackgroundId);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        fetchWeatherData(currentCity);
     }
 
     private void fetchWeatherData(String city){
@@ -115,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(WeatherResponse data) {
         String cityName = data.getCityName();
-        String countryCode = data.getSys().getCountryCode();
+        String countryCode = data.getSys() != null ? data.getSys().getCountryCode() : "";
         String temp = String.format("%.0f°C", data.getMain().getCurrentTemp());
 
         tvCityTemp.setText(cityName + ", " + countryCode + "\n" + temp);
@@ -133,35 +145,37 @@ public class MainActivity extends AppCompatActivity {
         // 1. CHECA SE É NOITE
         boolean isNight = iconId.endsWith("n");
 
-        // 2. LÓGICA DO TEMA BASEADA NO TEMPO
-        if (weatherId >= 200 && weatherId < 300) { // 2xx: Trovoadas
+        // 2. FUNDO PADRÃO
+        backgroundDrawable = isNight ? R.drawable.gradient_noite : R.drawable.gradient_dia;
+
+        // 3. LÓGICA DE TEMAS E ÍCONES
+        if (weatherId == 800) { // Céu Limpo
+            icon = isNight ? "🌙" : "☀️";
+        } else if (weatherId >= 801 && weatherId <= 804) { // Nuvens
+            icon = "☁️";
+            backgroundDrawable = R.drawable.gradient_nublado;
+        } else if ((weatherId >= 300 && weatherId < 600) || (weatherId >= 500 && weatherId < 600)) { // Chuva
+            if (weatherId < 500) {
+                backgroundDrawable = R.drawable.gradient_chuva_leve;
+                icon = "🌧";
+            } else {
+                backgroundDrawable = R.drawable.gradient_chuvoso;
+                icon = "☔️";
+            }
+        } else if (weatherId >= 200 && weatherId < 300) { // 2xx: Trovoadas
             backgroundDrawable = R.drawable.gradient_trovoadas;
             icon = "⚡️";
-        } else if (weatherId >= 300 && weatherId < 500) { // 3xx: Chuva Leve (Drizzle)
-            backgroundDrawable = R.drawable.gradient_chuva_leve;
-            icon = "🌧";
-        } else if (weatherId >= 500 && weatherId < 600) { // 5xx: Chuva
-            backgroundDrawable = R.drawable.gradient_chuvoso;
-            icon = "☔️";
-        } else if (weatherId >= 801 && weatherId < 805) { // 80x: Nublado
-            backgroundDrawable = R.drawable.gradient_nublado;
-            icon = "☁️";
-        } else if (weatherId == 800) { // 800: Céu limpo
-            // APLICA O TEMA DE DIA OU NOITE COM BASE NO ÍCONE
-            if (isNight) {
-                backgroundDrawable = R.drawable.gradient_noite; // Você precisa criar este drawable
-                icon = "🌙"; // Ícone de noite
-            } else {
-                backgroundDrawable = R.drawable.gradient_dia;
-                icon = "☀️";
-            }
+        } else if (weatherId >= 600 && weatherId < 700) { // 6xx: Neve
+            icon = "❄️";
         } else {
-            // Caso padrão se o ID não for mapeado
-            backgroundDrawable = isNight ? R.drawable.gradient_noite : R.drawable.gradient_dia;
+            icon = isNight ? "🌙" : "☀️";
         }
 
+        currentBackgroundId = backgroundDrawable;
+
+        // Aplica as mudanças
         if (mainLayout != null){
-            mainLayout.setBackgroundResource(backgroundDrawable);
+            mainLayout.setBackgroundResource(currentBackgroundId);
         }
         tvWeatherIcon.setText(icon);
     }

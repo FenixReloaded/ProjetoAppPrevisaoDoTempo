@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class DetalhesActivity extends AppCompatActivity {
 
     Button btnVoltarDet;
     public static final String EXTRA_WEATHER_DATA = "WEATHER_DATA";
+    private static final String EXTRA_TEMA_FUNDO = "TEMA_FUNDO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,17 @@ public class DetalhesActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_detalhes);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        LinearLayout mainLayout = findViewById(R.id.detalhes_main_layout);
+
+        // 1. RECEBE E APLICA O TEMA DINÂMICO
+        if (getIntent().getExtras() != null) {
+            int temaFundoId = getIntent().getIntExtra(EXTRA_TEMA_FUNDO, 0);
+            if (temaFundoId != 0 && mainLayout != null) {
+                mainLayout.setBackgroundResource(temaFundoId);
+            }
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -58,15 +70,19 @@ public class DetalhesActivity extends AppCompatActivity {
                         String temp = String.format("%.0f°C", data.getMain().getCurrentTemp());
                         String description = data.getWeather().get(0).getDescription();
 
+                        double minTemp = data.getMain().getMinTemp();
+                        double maxTemp = data.getMain().getMaxTemp();
+
                         tvDetalhesCidade.setText(cityCountry + " - " + temp + " (" + description + ")");
                         tvSensacao.setText(String.format("Sensação Térmica: %.0f°C", data.getMain().getFeelsLike()));
                         tvUmidade.setText(String.format("Umidade: %d%%", data.getMain().getHumidity()));
                         tvPressao.setText(String.format("Pressão: %d hPa", data.getMain().getPressure()));
+                        tvTempMinMax.setText(String.format("Mínima/Máxima: %.0f°C / %.0f°C", minTemp, maxTemp));
 
                         // Chamadas seguras
-                        double minTemp = data.getMain().getMinTemp();
-                        double maxTemp = data.getMain().getMaxTemp();
-                        tvTempMinMax.setText(String.format("Mínima/Máxima: %.0f°C / %.0f°C", minTemp, maxTemp));
+//                        double minTemp = data.getMain().getMinTemp();
+//                        double maxTemp = data.getMain().getMaxTemp();
+//                        tvTempMinMax.setText(String.format("Mínima/Máxima: %.0f°C / %.0f°C", minTemp, maxTemp));
 
                     } else {
                         Toast.makeText(this, "Erro: Dados do clima incompletos.", Toast.LENGTH_LONG).show();
@@ -82,6 +98,10 @@ public class DetalhesActivity extends AppCompatActivity {
             }
 
         } else {
+            // Caso não tenha dados na Intent usar dados mockados para teste
+            setMockData(tvDetalhesCidade, tvSensacao, tvUmidade, tvPressao, tvTempMinMax);
+
+
             tvDetalhesCidade.setText("São Paulo, BR (Sem dados API)");
             tvSensacao.setText("Sensação Térmica: --");
             tvUmidade.setText("Umidade: --");
@@ -91,5 +111,14 @@ public class DetalhesActivity extends AppCompatActivity {
 
         btnVoltarDet = findViewById(R.id.btnVoltarDet);
         btnVoltarDet.setOnClickListener(v -> finish());
+    }
+
+    // Define os dados mockados
+    private void setMockData(TextView tvCidade, TextView tvSensacao, TextView tvUmidade, TextView tvPressao, TextView tvTempMinMax) {
+        tvCidade.setText("São Paulo, BR (Sem dados API)");
+        tvSensacao.setText("Sensação Térmica: --°C");
+        tvUmidade.setText("Umidade: --%");
+        tvPressao.setText("Pressão: -- hPa");
+        tvTempMinMax.setText("Mínima/Máxima: --°C / --°C");
     }
 }
