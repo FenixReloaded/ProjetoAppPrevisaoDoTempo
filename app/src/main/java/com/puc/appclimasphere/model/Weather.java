@@ -33,8 +33,4 @@ public class Weather implements Serializable {
     public String getIcon(){
         return icon;
     }
-
-
-
-
 }

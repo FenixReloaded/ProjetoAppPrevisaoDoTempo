@@ -30,7 +30,7 @@ public class DetalhesActivity extends AppCompatActivity {
 
         LinearLayout mainLayout = findViewById(R.id.detalhes_main_layout);
 
-        // 1. RECEBE E APLICA O TEMA DINÂMICO
+        // Recebe e aplica o tema dinâmico
         if (getIntent().getExtras() != null) {
             int temaFundoId = getIntent().getIntExtra(EXTRA_TEMA_FUNDO, 0);
             if (temaFundoId != 0 && mainLayout != null) {
@@ -51,11 +51,10 @@ public class DetalhesActivity extends AppCompatActivity {
         TextView tvTempMinMax = findViewById(R.id.tv_temp_min_max);
 
         Bundle extras = getIntent().getExtras();
-
-        // INÍCIO DA ZONA CRÍTICA
+        // Início da zona crítica
         if (extras != null && extras.containsKey(EXTRA_WEATHER_DATA)){
 
-            // Tenta pegar o objeto e faz o CAST. Usa Object para evitar um crash caso o tipo esteja errado
+            // Tenta pegar o objeto e faz o cast. Usa Object para evitar um crash caso o tipo esteja errado
             Object serializableData = extras.getSerializable(EXTRA_WEATHER_DATA);
 
             if (serializableData instanceof WeatherResponse) {
@@ -79,11 +78,6 @@ public class DetalhesActivity extends AppCompatActivity {
                         tvPressao.setText(String.format("Pressão: %d hPa", data.getMain().getPressure()));
                         tvTempMinMax.setText(String.format("Mínima/Máxima: %.0f°C / %.0f°C", minTemp, maxTemp));
 
-                        // Chamadas seguras
-//                        double minTemp = data.getMain().getMinTemp();
-//                        double maxTemp = data.getMain().getMaxTemp();
-//                        tvTempMinMax.setText(String.format("Mínima/Máxima: %.0f°C / %.0f°C", minTemp, maxTemp));
-
                     } else {
                         Toast.makeText(this, "Erro: Dados do clima incompletos.", Toast.LENGTH_LONG).show();
                     }
@@ -92,15 +86,12 @@ public class DetalhesActivity extends AppCompatActivity {
                     Log.e("DetalhesActivity", "Crash ao processar dados: " + e.getMessage());
                     Toast.makeText(this, "Erro crítico ao carregar detalhes. Verifique a API Key.", Toast.LENGTH_LONG).show();
                 }
-
             } else {
                 Toast.makeText(this, "Erro no formato dos dados de clima.", Toast.LENGTH_LONG).show();
             }
-
         } else {
             // Caso não tenha dados na Intent usar dados mockados para teste
             setMockData(tvDetalhesCidade, tvSensacao, tvUmidade, tvPressao, tvTempMinMax);
-
 
             tvDetalhesCidade.setText("São Paulo, BR (Sem dados API)");
             tvSensacao.setText("Sensação Térmica: --");
@@ -112,7 +103,6 @@ public class DetalhesActivity extends AppCompatActivity {
         btnVoltarDet = findViewById(R.id.btnVoltarDet);
         btnVoltarDet.setOnClickListener(v -> finish());
     }
-
     // Define os dados mockados
     private void setMockData(TextView tvCidade, TextView tvSensacao, TextView tvUmidade, TextView tvPressao, TextView tvTempMinMax) {
         tvCidade.setText("São Paulo, BR (Sem dados API)");

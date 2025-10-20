@@ -30,11 +30,4 @@ public class WeatherResponse implements Serializable {
     public Sys getSys() {
         return sys;
     }
-
-
-
-
-
-
-
 }

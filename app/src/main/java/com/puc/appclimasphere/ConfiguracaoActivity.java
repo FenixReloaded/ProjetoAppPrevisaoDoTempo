@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ConfiguracaoActivity extends AppCompatActivity {
 
-    Button btnIrParaSelecao, btnVoltarCon;
+    Button btnVoltarCon;
     private static final String EXTRA_TEMA_FUNDO = "TEMA_FUNDO";
 
 
@@ -25,12 +25,13 @@ public class ConfiguracaoActivity extends AppCompatActivity {
 
         LinearLayout mainLayout = findViewById(R.id.config_main_layout);
 
-        // 1. RECEBE O TEMA DINÂMICO DA INTENT
+        // Recebe o tema dinâmico da intent
         if (getIntent().getExtras() != null) {
-            // Pega o ID do recurso (o R.drawable.xxx) enviado pela Activity anterior.
+
+            // Pega o ID do recurso enviado pela Activity anterior
             int temaFundoId = getIntent().getIntExtra(EXTRA_TEMA_FUNDO, 0);
 
-            // Verifica se o ID é válido (diferente de 0) antes de aplicar
+            // Verifica se o ID é válido antes de aplicar
             if (temaFundoId != 0 && mainLayout != null) {
                 mainLayout.setBackgroundResource(temaFundoId);
             }
@@ -41,13 +42,6 @@ public class ConfiguracaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-//        btnIrParaSelecao = findViewById(R.id.btn_navegar_selecao_cidade);
-//
-//        btnIrParaSelecao.setOnClickListener(v -> {
-//            Intent intent = new Intent(ConfiguracaoActivity.this, SelecaoCidadeActivity.class);
-//            startActivity(intent);
-//        });
 
         btnVoltarCon = findViewById(R.id.btnVoltarCon);
         btnVoltarCon.setOnClickListener(v -> finish());

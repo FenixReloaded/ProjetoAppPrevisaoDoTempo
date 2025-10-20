@@ -77,7 +77,7 @@
         android:background="@drawable/gradient_background_gray"
         android:lineSpacingExtra="8dp"
         android:padding="12dp"
-        android:text="1. Rio de Janeiro, BR\n2. Porto Alegre, BR\n3. Londres, GB"
+        android:text="1.São Paulo, BR\n2. Rio de Janeiro, BR\n3. Porto Alegre, BR\n4. Londres, GB"
         android:textColor="#020202"
         android:textSize="16sp" />
 

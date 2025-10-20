@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
         tvWeatherIcon = findViewById(R.id.tv_weather_icon);
         mainLayout = findViewById(R.id.main);
 
-        //fetchWeatherData("Nova York");
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -115,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                             //O erro 401 ou 404 Chave/Cidade errada
                 }
             }
-
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Log.e("API_ERROR", "Falha na conexão: " + t.getMessage());
@@ -124,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     private void updateUI(WeatherResponse data) {
         String cityName = data.getCityName();
         String countryCode = data.getSys() != null ? data.getSys().getCountryCode() : "";
@@ -142,13 +137,13 @@ public class MainActivity extends AppCompatActivity {
         String icon = "❓";
         int backgroundDrawable;
 
-        // 1. CHECA SE É NOITE
+        // Checa se é noite
         boolean isNight = iconId.endsWith("n");
 
-        // 2. FUNDO PADRÃO
+        //Define o padrão de fundo
         backgroundDrawable = isNight ? R.drawable.gradient_noite : R.drawable.gradient_dia;
 
-        // 3. LÓGICA DE TEMAS E ÍCONES
+        // Lógica de temas e ícones
         if (weatherId == 800) { // Céu Limpo
             icon = isNight ? "🌙" : "☀️";
         } else if (weatherId >= 801 && weatherId <= 804) { // Nuvens

@@ -33,7 +33,6 @@ public class Main implements Serializable {
         return humidity;
     }
 
-
     public double getFeelsLike() {
         return feelsLike;
     }
@@ -47,10 +46,7 @@ public class Main implements Serializable {
         return minTemp != null ? minTemp : getCurrentTemp();
     }
 
-
     public double getMaxTemp() {
         return maxTemp != null ? maxTemp : getCurrentTemp();
     }
-
-
 }
