@@ -4,7 +4,10 @@
     <gradient
         android:angle="270"
         android:startColor="#FFD740"
-        android:centerColor="#FFA000"
+        android:centerColor="#E7FFA000"
         android:endColor="#FF5722"
-        android:type="linear" />
+        android:centerX="50%"
+        android:centerY="50%"
+        android:gradientRadius="90%"
+        android:type="radial" />
 </shape>

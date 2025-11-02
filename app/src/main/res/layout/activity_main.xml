@@ -30,14 +30,13 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <ImageView
             android:id="@+id/tv_weather_icon"
             android:layout_width="250dp"
             android:layout_height="180dp"
             android:layout_marginBottom="8dp"
-            android:text="☀️"
             android:textAlignment="center"
-            android:textSize="120sp" />
+             />
 
         <TextView
             android:id="@+id/tv_city_temp"
@@ -68,18 +67,6 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btn_configuracao"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#CCC8C4"
-        android:padding="14dp"
-        android:text="Configuração de Localização"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_mudar_cidade"
@@ -101,6 +88,20 @@
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
         android:text="Seleção de Período de Amostra"
+        android:textAlignment="center"
+        android:layout_marginBottom="40dp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_configuracao"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="#CCC8C4"
+        android:padding="14dp"
+        android:text="Configurações"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp"
