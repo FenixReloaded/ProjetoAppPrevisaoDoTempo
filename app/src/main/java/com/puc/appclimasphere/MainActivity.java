@@ -1,6 +1,7 @@
 package com.puc.appclimasphere;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -22,8 +23,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.puc.appclimasphere.api.WeatherService;
 import com.puc.appclimasphere.model.WeatherResponse;
+
+// Importa as chaves de preferência da ConfiguracaoActivity
+import static com.puc.appclimasphere.ConfiguracaoActivity.PREFS_NAME;
+import static com.puc.appclimasphere.ConfiguracaoActivity.KEY_UNITS;
+import static com.puc.appclimasphere.ConfiguracaoActivity.UNITS_METRIC;
+
+import static com.puc.appclimasphere.ConfiguracaoActivity.KEY_LANG;
+import static com.puc.appclimasphere.ConfiguracaoActivity.LANG_PT_BR;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,10 +47,25 @@ public class MainActivity extends AppCompatActivity {
     private String currentCity = "São Paulo";
     private int currentBackgroundId = R.drawable.gradient_dia;
 
+    // Chave pública para receber o resultado da outra activity
+    public static final String EXTRA_NEW_CITY = "NEW_CITY";
+    private ActivityResultLauncher <Intent> selecaoCidadeLauncher;
+
+    private SharedPreferences sharedPreferences;
+    private String currentUnit = UNITS_METRIC;
+
+    private String currentLang = LANG_PT_BR; // Variável para guardar o idioma atual
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        registrarLauncherSelecaoCidade();
+
+        // Inicializa as preferências
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
         setContentView(R.layout.activity_main);
 
         //Inicializando as Views
@@ -61,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, DetalhesActivity.class);
             intent.putExtra("WEATHER_DATA", cachedWeatherData);
             intent.putExtra("TEMA_FUNDO", currentBackgroundId);
+            intent.putExtra(KEY_UNITS, currentUnit);
             startActivity(intent);
         }else{
             Toast.makeText(MainActivity.this, "Aguarde, buscando dados do clima...", Toast.LENGTH_SHORT).show();
@@ -78,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         btnMudarCidade.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SelecaoCidadeActivity.class);
             intent.putExtra("TEMA_FUNDO", currentBackgroundId);
-            startActivity(intent);
+            selecaoCidadeLauncher.launch(intent);
         });
 
         btnSelecaoPeriodo = findViewById(R.id.btn_selecao_periodo);
@@ -89,10 +117,61 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Registra o "escutador" que vai receber a cidade de volta da SelecaoCidadeActivity
+    private void registrarLauncherSelecaoCidade() {
+        selecaoCidadeLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Verifica se a activity retornou com SUCESSO (RESULT_OK)
+                    if (result.getResultCode() == AppCompatActivity.RESULT_OK && result.getData() != null) {
+
+                        // Pega a string da cidade que foi enviada de volta
+                        String newCity = result.getData().getStringExtra(EXTRA_NEW_CITY);
+
+                        // Verifica se a cidade é válida e se é diferente da atual
+                        if (newCity != null && !newCity.isEmpty() && !newCity.equals(currentCity)) {
+
+                            // Atualiza a cidade atual
+                            currentCity = newCity;
+
+                            // O método onResume() será chamado automaticamente após
+                            // o retorno à MainActivity, e ele já chama o fetchWeatherData().
+                            // Não é necessário chamar fetchWeatherData() aqui.
+                        }
+                    }
+                }
+        );
+    }
+
     @Override
     protected void onResume(){
         super.onResume();
+        loadSettingsAndUpdateWeather();
         fetchWeatherData(currentCity);
+    }
+
+    /**
+     * Lê as preferências salvas e chama o fetchWeatherData
+     */
+    private void loadSettingsAndUpdateWeather() {
+        // Lê a unidade salva, usando "metric" como padrão
+        String savedUnit = sharedPreferences.getString(KEY_UNITS, UNITS_METRIC);
+
+        // Lê o idioma salvo, usando "pt_br" como padrão
+        String savedLang = sharedPreferences.getString(KEY_LANG, LANG_PT_BR);
+        // --- FIM CÓDIGO NOVO ---
+
+        // --- LÓGICA ATUALIZADA ---
+        // Se a unidade MUDOU, ou se o idioma MUDOU,
+        // ou se for a primeira vez (cachedWeatherData == null),
+        // então buscamos os dados da API.
+        if (!savedUnit.equals(currentUnit) || !savedLang.equals(currentLang) || cachedWeatherData == null) {
+            currentUnit = savedUnit;
+            currentLang = savedLang; // Salva o idioma atual
+            fetchWeatherData(currentCity);
+        }
+        // Se nada mudou e já temos dados, não fazemos nada,
+        // pois a UI já está atualizada.
     }
 
     private void fetchWeatherData(String city){
@@ -106,8 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
         WeatherService service = retrofit.create(WeatherService.class);
 
-        service.getCurrentWeather(city, WeatherService.API_KEY, WeatherService.UNITS,
-                WeatherService.LANG).enqueue(new Callback<WeatherResponse>() {
+        // A linguagem ainda está fixa, mas a unidade agora é dinâmica
+        String lang = WeatherService.LANG; // "pt_br"
+
+        service.getCurrentWeather(city, WeatherService.API_KEY, currentUnit,
+                currentLang).enqueue(new Callback<WeatherResponse>() {
+
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
@@ -135,7 +218,12 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(WeatherResponse data) {
         String cityName = data.getCityName();
         String countryCode = data.getSys() != null ? data.getSys().getCountryCode() : "";
-        String temp = String.format("%.0f°C", data.getMain().getCurrentTemp());
+
+
+        // Define o símbolo da unidade
+        String unitSymbol = currentUnit.equals(UNITS_METRIC) ? "°C" : "°F";
+
+        String temp = String.format("%.0f%s", data.getMain().getCurrentTemp(), unitSymbol);
 
         tvCityTemp.setText(cityName + ", " + countryCode + "\n" + temp);
 

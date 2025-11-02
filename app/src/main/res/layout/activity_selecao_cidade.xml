@@ -39,7 +39,7 @@
             android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/et_busca_cidade"
+        android:id="@+id/et_cidade_busca"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -47,7 +47,7 @@
         android:background="@drawable/gradient_background_gray"
         android:hint="Digite o nome da cidade..."
         android:imeOptions="actionSearch"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:inputType="textCapWords"
         android:padding="16dp" />
 
@@ -71,15 +71,62 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 
-    <TextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gradient_background_gray"
-        android:lineSpacingExtra="8dp"
-        android:padding="12dp"
-        android:text="1.São Paulo, BR\n2. Rio de Janeiro, BR\n3. Porto Alegre, BR\n4. Londres, GB"
-        android:textColor="#020202"
-        android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_background_gray"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_sugestao_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="1. São Paulo, BR"
+                android:textColor="#020202"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground" />
+
+            <TextView
+                android:id="@+id/tv_sugestao_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="2. Rio de Janeiro, BR"
+                android:textColor="#020202"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground" />
+
+            <TextView
+                android:id="@+id/tv_sugestao_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="3. Porto Alegre, BR"
+                android:textColor="#020202"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground" />
+
+            <TextView
+                android:id="@+id/tv_sugestao_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="4. Londres, GB"
+                android:textColor="#020202"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -87,7 +134,7 @@
         android:id="@+id/btnVoltarPer"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="150dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"

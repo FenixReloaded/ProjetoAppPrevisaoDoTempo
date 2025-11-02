@@ -16,11 +16,18 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.puc.appclimasphere.model.WeatherResponse;
 
+import static com.puc.appclimasphere.ConfiguracaoActivity.KEY_UNITS;
+import static com.puc.appclimasphere.ConfiguracaoActivity.UNITS_METRIC;
+
+import java.util.Locale;
+
 public class DetalhesActivity extends AppCompatActivity {
 
     Button btnVoltarDet;
     public static final String EXTRA_WEATHER_DATA = "WEATHER_DATA";
     private static final String EXTRA_TEMA_FUNDO = "TEMA_FUNDO";
+
+    private String unitSymbol = "°C"; // Padrão
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,15 @@ public class DetalhesActivity extends AppCompatActivity {
         TextView tvTempMinMax = findViewById(R.id.tv_temp_min_max);
 
         Bundle extras = getIntent().getExtras();
+
         // Início da zona crítica
+
+        // Define o símbolo da unidade (C ou F)
+        if (extras != null) {
+            String currentUnit = extras.getString(KEY_UNITS, UNITS_METRIC);
+            unitSymbol = currentUnit.equals(UNITS_METRIC) ? "°C" : "°F";
+        }
+
         if (extras != null && extras.containsKey(EXTRA_WEATHER_DATA)){
 
             // Tenta pegar o objeto e faz o cast. Usa Object para evitar um crash caso o tipo esteja errado
@@ -66,18 +81,33 @@ public class DetalhesActivity extends AppCompatActivity {
                     if (data != null && data.getMain() != null && data.getWeather() != null && !data.getWeather().isEmpty() && data.getSys() != null) {
 
                         String cityCountry = data.getCityName() + ", " + data.getSys().getCountryCode();
-                        String temp = String.format("%.0f°C", data.getMain().getCurrentTemp());
+
+                        String temp = String.format(Locale.getDefault(),"%.0f%s", data.getMain().getCurrentTemp(), unitSymbol);
                         String description = data.getWeather().get(0).getDescription();
 
                         double minTemp = data.getMain().getMinTemp();
                         double maxTemp = data.getMain().getMaxTemp();
 
-                        tvDetalhesCidade.setText(cityCountry + " - " + temp + " (" + description + ")");
-                        tvSensacao.setText(String.format("Sensação Térmica: %.0f°C", data.getMain().getFeelsLike()));
-                        tvUmidade.setText(String.format("Umidade: %d%%", data.getMain().getHumidity()));
-                        tvPressao.setText(String.format("Pressão: %d hPa", data.getMain().getPressure()));
-                        tvTempMinMax.setText(String.format("Mínima/Máxima: %.0f°C / %.0f°C", minTemp, maxTemp));
+                        if (tvDetalhesCidade != null) {
+                            tvDetalhesCidade.setText(cityCountry + " - " + temp + " (" + description + ")");
+                        }
+                        if (tvSensacao != null) {
+                            tvSensacao.setText(String.format(Locale.getDefault(),"Sensação Térmica: %.0f%s", data.getMain().getFeelsLike(), unitSymbol));
+                        }
+                        if (tvUmidade != null) {
+                            tvUmidade.setText(String.format(Locale.getDefault(),"Umidade: %d%%", data.getMain().getHumidity()));
+                        }
+                        if (tvPressao != null) {
+                            tvPressao.setText(String.format(Locale.getDefault(),"Pressão: %d hPa", data.getMain().getPressure()));
+                        }
 
+                        // Esta é a verificação crucial que impede o crash
+                        if (tvTempMinMax != null) {
+                            tvTempMinMax.setText(String.format(Locale.getDefault(),"Mínima/Máxima: %.0f%s / %.0f%s", minTemp, unitSymbol, maxTemp, unitSymbol));
+                        } else {
+                            // Se ele for nulo, saberemos pelo Logcat
+                            Log.e("DetalhesActivity", "ERRO FATAL: tvTempMinMax é NULL. Verifique o ID no XML e limpe o cache.");
+                        }
                     } else {
                         Toast.makeText(this, "Erro: Dados do clima incompletos.", Toast.LENGTH_LONG).show();
                     }
@@ -93,11 +123,11 @@ public class DetalhesActivity extends AppCompatActivity {
             // Caso não tenha dados na Intent usar dados mockados para teste
             setMockData(tvDetalhesCidade, tvSensacao, tvUmidade, tvPressao, tvTempMinMax);
 
-            tvDetalhesCidade.setText("São Paulo, BR (Sem dados API)");
-            tvSensacao.setText("Sensação Térmica: --");
-            tvUmidade.setText("Umidade: --");
-            tvPressao.setText("Pressão: --");
-            tvTempMinMax.setText("Mínima/Máxima: --");
+//            tvDetalhesCidade.setText("São Paulo, BR (Sem dados API)");
+//            tvSensacao.setText("Sensação Térmica: --");
+//            tvUmidade.setText("Umidade: --");
+//            tvPressao.setText("Pressão: --");
+//            tvTempMinMax.setText("Mínima/Máxima: --");
         }
 
         btnVoltarDet = findViewById(R.id.btnVoltarDet);
@@ -106,9 +136,9 @@ public class DetalhesActivity extends AppCompatActivity {
     // Define os dados mockados
     private void setMockData(TextView tvCidade, TextView tvSensacao, TextView tvUmidade, TextView tvPressao, TextView tvTempMinMax) {
         tvCidade.setText("São Paulo, BR (Sem dados API)");
-        tvSensacao.setText("Sensação Térmica: --°C");
+        tvSensacao.setText(String.format("Sensação Térmica: --%s", unitSymbol));
         tvUmidade.setText("Umidade: --%");
         tvPressao.setText("Pressão: -- hPa");
-        tvTempMinMax.setText("Mínima/Máxima: --°C / --°C");
+        tvTempMinMax.setText(String.format("Mínima/Máxima: --%s / --%s", unitSymbol, unitSymbol));
     }
 }
