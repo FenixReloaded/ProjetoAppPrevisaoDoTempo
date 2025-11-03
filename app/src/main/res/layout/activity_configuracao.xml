@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:padding="24dp"
     tools:context=".ConfiguracaoActivity">
-    
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -18,8 +18,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
-            android:text="Configurações"
-            android:textAlignment="center"
+            android:text="@string/titulo_config" android:textAlignment="center"
             android:background="@drawable/gradient_botao_voltar"
             android:textColor="@color/white"
             android:textSize="32sp"
@@ -27,72 +26,67 @@
 
     </LinearLayout>
 
-  <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="300dp"
-      android:layout_gravity="center_horizontal"
-      android:background="@drawable/gradient_background_gray"
-      android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/gradient_background_gray"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Unidade de Temperatura"
-        android:textAlignment="center"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/gradient_botao_voltar"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-
-    <RadioGroup
-        android:id="@+id/rg_unidade"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rb_celsius"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Celsius (°C)"
-            android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:layout_marginBottom="8dp"
+            android:text="@string/label_unidade" android:textAlignment="center"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/gradient_botao_voltar"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-        <RadioButton
-            android:id="@+id/rb_fahrenheit"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/rg_unidade"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="Fahrenheit (°F)"
+            android:layout_marginBottom="24dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_celsius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/label_celsius" android:textAlignment="center"
+                android:textColor="@color/black" />
+
+            <RadioButton
+                android:id="@+id/rb_fahrenheit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/label_fahrenheit" android:textAlignment="center"
+                android:textColor="@color/black" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/label_idioma" android:textAlignment="center"
+            android:background="@drawable/gradient_botao_voltar"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinner_idioma"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@android:color/transparent"
             android:textAlignment="center"
-            android:textColor="@color/black" />
-    </RadioGroup>
+            android:padding="12dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Idioma do App"
-        android:textAlignment="center"
-        android:background="@drawable/gradient_botao_voltar"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-
-    <Spinner
-        android:id="@+id/spinner_idioma"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:background="@android:color/transparent"
-        android:textAlignment="center"
-        android:entries="@array/languages_array"
-        android:padding="12dp" />
-
-  </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnVoltarCon"
@@ -102,8 +96,7 @@
         android:layout_marginBottom="40dp"
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
-        android:text="Voltar ao Menu Principal"
-        android:textAlignment="center"
+        android:text="@string/btn_voltar_menu" android:textAlignment="center"
         android:textColor="#000000"
         android:textStyle="bold" />
 

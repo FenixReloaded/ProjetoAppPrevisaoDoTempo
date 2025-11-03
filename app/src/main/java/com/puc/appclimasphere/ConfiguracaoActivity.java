@@ -21,7 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class ConfiguracaoActivity extends AppCompatActivity {
+public class ConfiguracaoActivity extends BaseActivity {
 
     Button btnVoltarCon;
     private static final String EXTRA_TEMA_FUNDO = "TEMA_FUNDO";
@@ -45,7 +45,7 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     private Spinner spinnerIdioma;
 
     // Mapeamento: Nomes no Spinner -> Códigos da API
-    private final String[] displayLanguages = {"Português (Brasil)", "English", "Español"};
+    private String[] displayLanguages;
     private final String[] apiLangCodes = {LANG_PT_BR, LANG_EN, LANG_ES};
 
 
@@ -62,8 +62,13 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         // Inicializa o SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
+        displayLanguages = new String[] {
+                getString(R.string.idioma_pt),
+                getString(R.string.idioma_en),
+                getString(R.string.idioma_es)
+        };
+
         // IDs do seu R.layout.activity_configuracao
-        // (Você precisa garantir que esses IDs existam no seu XML)
         rgUnidade = findViewById(R.id.rg_unidade);
         rbCelsius = findViewById(R.id.rb_celsius);
         rbFahrenheit = findViewById(R.id.rb_fahrenheit);
@@ -100,11 +105,19 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         spinnerIdioma.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Pega o código da API ("pt_br", "en", etc.) baseado na posição
                 String selectedLangCode = apiLangCodes[position];
 
-                // Salva no SharedPreferences
-                sharedPreferences.edit().putString(KEY_LANG, selectedLangCode).apply();
+                // Pega o idioma ATUALMENTE salvo
+                String currentLang = sharedPreferences.getString(KEY_LANG, LANG_PT_BR);
+
+                // Só reinicia se o usuário ESCOLHEU um idioma DIFERENTE
+                if (!currentLang.equals(selectedLangCode)) {
+                    // Salva o novo idioma
+                    sharedPreferences.edit().putString(KEY_LANG, selectedLangCode).apply();
+
+                    // Reinicia o app
+                    reiniciarApp();
+                }
             }
 
             @Override
@@ -159,5 +172,18 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         }
         // Define o item selecionado no Spinner
         spinnerIdioma.setSelection(langPosition);
+    }
+
+    /**
+     * Reinicia a aplicação para aplicar a mudança de idioma em todas as telas.
+     */
+    private void reiniciarApp() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // Limpa todas as activities anteriores e inicia a MainActivity como nova
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+        // Fecha esta activity e todas as outras
+        finishAffinity();
     }
 }

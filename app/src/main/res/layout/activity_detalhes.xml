@@ -20,8 +20,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/gradient_botao_voltar"
             android:padding="10dp"
-            android:text="Detalhes do Clima"
-            android:textColor="@color/white"
+            android:text="@string/titulo_detalhes" android:textColor="@color/white"
             android:textSize="32sp"
             android:textStyle="bold" />
 
@@ -40,8 +39,7 @@
             android:layout_marginTop="50dp"
             android:background="@drawable/gradient_background_gray"
             android:padding="@dimen/cardview_default_radius"
-            android:text="São Paulo, BR - 19°C (Nublado)"
-            android:textColor="#030404"
+            android:text="@string/carregando" tools:text="São Paulo, BR - 19°C (Nublado)" android:textColor="#030404"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -57,24 +55,16 @@
         <TextView
             android:id="@+id/tv_sensacao"
             style="@style/DetalheTextView"
-            android:text="Sensação Térmica: --°C" />
-
-        <TextView
-            android:id="@+id/tv_umidade"
-            style="@style/DetalheTextView"
-            android:text="Umidade: --%" />
-
-        <TextView
-            android:id="@+id/tv_pressao"
-            style="@style/DetalheTextView"
-            android:text="Pressão: -- hPa" />
-
-        <TextView
-            android:id="@+id/tv_temp_min_max"
-            style="@style/DetalheTextView"
-            android:text="Mínima/Máxima: --°C / --°C" />
-
-    </LinearLayout>
+            tools:text="Sensação Térmica: --°C" android:text="@string/mock_sensacao" /> <TextView
+        android:id="@+id/tv_umidade"
+        style="@style/DetalheTextView"
+        android:text="@string/mock_umidade" /> <TextView
+        android:id="@+id/tv_pressao"
+        style="@style/DetalheTextView"
+        android:text="@string/mock_pressao" /> <TextView
+        android:id="@+id/tv_temp_min_max"
+        style="@style/DetalheTextView"
+        tools:text="Mínima/Máxima: --°C / --°C" android:text="@string/mock_min_max" /> </LinearLayout>
 
     <Button
         android:id="@+id/btnVoltarDet"
@@ -84,8 +74,7 @@
         android:layout_marginBottom="40dp"
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
-        android:text="Voltar ao Menu Principal"
-        android:textColor="#000000"
+        android:text="@string/btn_voltar_menu" android:textColor="#000000"
         android:textStyle="bold" />
 
 </LinearLayout>

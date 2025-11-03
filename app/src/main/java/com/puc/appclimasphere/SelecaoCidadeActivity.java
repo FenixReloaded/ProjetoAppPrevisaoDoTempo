@@ -14,7 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class SelecaoCidadeActivity extends AppCompatActivity {
+public class SelecaoCidadeActivity extends BaseActivity {
 
     Button btnVoltarSel;
     private static final String EXTRA_TEMA_FUNDO = "TEMA_FUNDO";
@@ -49,7 +49,9 @@ public class SelecaoCidadeActivity extends AppCompatActivity {
         // Você precisa inicializar as variáveis antes de usá-las.
         // Assumindo que os IDs no seu XML são os que discutimos:
 
+        // IDs do XML
         etCidadeBusca = findViewById(R.id.et_cidade_busca);
+
         btnBuscar = findViewById(R.id.btn_buscar);
 
         tvSugestao1 = findViewById(R.id.tv_sugestao_1);
@@ -62,16 +64,18 @@ public class SelecaoCidadeActivity extends AppCompatActivity {
         btnVoltarSel.setOnClickListener(v -> finish());
 
         // Ação do botão "Buscar"
-        btnBuscar.setOnClickListener(v -> {
-            String cidade = etCidadeBusca.getText().toString().trim();
-            if (!cidade.isEmpty()) {
-                // Se o texto não estiver vazio, retorna a cidade
-                retornarCidadeSelecionada(cidade);
-            } else {
-                // Opcional: mostrar erro se o campo estiver vazio
-                etCidadeBusca.setError("Digite o nome da cidade");
-            }
-        });
+        if (btnBuscar != null) {
+            btnBuscar.setOnClickListener(v -> {
+                String cidade = etCidadeBusca.getText().toString().trim();
+                if (!cidade.isEmpty()) {
+                    // Se o texto não estiver vazio, retorna a cidade
+                    retornarCidadeSelecionada(cidade);
+                } else {
+                    // <-- MUDANÇA: Usando getString() para traduzir o erro
+                    etCidadeBusca.setError(getString(R.string.erro_digite_cidade));
+                }
+            });
+        }
 
         // 4. Ações das cidades sugeridas (com base nos textos da imagem)
         // Usamos null-checks caso você remova alguma sugestão do layout
@@ -101,7 +105,7 @@ public class SelecaoCidadeActivity extends AppCompatActivity {
         resultIntent.putExtra(EXTRA_NEW_CITY, cidade);
 
         // Define o resultado como SUCESSO (RESULT_OK) e envia o Intent
-        setResult(Activity.RESULT_OK, resultIntent);
+        setResult(AppCompatActivity.RESULT_OK, resultIntent);
 
         // Fecha a SelecaoCidadeActivity e retorna para a MainActivity
         finish();

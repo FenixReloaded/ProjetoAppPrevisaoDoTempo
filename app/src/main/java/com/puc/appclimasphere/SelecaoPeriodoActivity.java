@@ -11,7 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class SelecaoPeriodoActivity extends AppCompatActivity {
+public class SelecaoPeriodoActivity extends BaseActivity {
 
     Button btnVoltarPer;
     private static final String EXTRA_TEMA_FUNDO = "TEMA_FUNDO";

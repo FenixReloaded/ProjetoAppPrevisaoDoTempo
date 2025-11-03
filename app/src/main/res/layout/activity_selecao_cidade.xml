@@ -16,8 +16,7 @@
         android:layout_marginBottom="50dp"
         android:background="@drawable/gradient_botao_voltar"
         android:padding="5dp"
-        android:text="Definir Localidade"
-        android:textColor="#FFFFFF"
+        android:text="@string/titulo_cidade" android:textColor="#FFFFFF"
         android:textSize="32sp"
         android:textStyle="bold" />
 
@@ -31,45 +30,40 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Buscar Cidade"
-            android:textAlignment="center"
+            android:text="@string/label_buscar_cidade" android:textAlignment="center"
             android:layout_marginTop="15dp"
             android:background="@drawable/gradient_botao_voltar"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/et_cidade_busca"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/gradient_background_gray"
-        android:hint="Digite o nome da cidade..."
-        android:imeOptions="actionSearch"
-        android:textColor="@color/black"
-        android:inputType="textCapWords"
-        android:padding="16dp" />
+        <EditText
+            android:id="@+id/et_cidade_busca"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/gradient_background_gray"
+            android:hint="@string/hint_digite_cidade" android:imeOptions="actionSearch"
+            android:textColor="@color/black"
+            android:inputType="textCapWords"
+            android:padding="16dp" />
 
-    <Button
-        android:id="@+id/btn_buscar"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#CAC6C2"
-        android:padding="14dp"
-        android:text="Buscar"
-        android:textColor="#000000" />
+        <Button
+            android:id="@+id/btn_buscar" android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="#CAC6C2"
+            android:padding="14dp"
+            android:text="@string/btn_buscar" android:textColor="#000000" />
 
-    <TextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/gradient_botao_voltar"
-        android:text="Cidades Sugeridas"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/gradient_botao_voltar"
+            android:text="@string/label_sugeridas" android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
 
         <LinearLayout
@@ -138,8 +132,7 @@
         android:layout_marginBottom="40dp"
         android:backgroundTint="#CCC8C4"
         android:padding="14dp"
-        android:text="Voltar ao Menu Principal"
-        android:textColor="#000000"
+        android:text="@string/btn_voltar_menu" android:textColor="#000000"
         android:textStyle="bold" />
 
 </LinearLayout>

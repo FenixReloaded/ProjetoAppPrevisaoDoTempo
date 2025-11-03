@@ -37,7 +37,9 @@ import static com.puc.appclimasphere.ConfiguracaoActivity.UNITS_METRIC;
 import static com.puc.appclimasphere.ConfiguracaoActivity.KEY_LANG;
 import static com.puc.appclimasphere.ConfiguracaoActivity.LANG_PT_BR;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Locale;
+
+public class MainActivity extends BaseActivity {
 
     Button btnDetalhes, btnConfiguracao, btnMudarCidade, btnSelecaoPeriodo;
     private TextView tvCityTemp;
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         mainLayout = findViewById(R.id.main);
 
         tvWeatherIcon.setImageResource(R.drawable.ic_weather_loading);
-        tvCityTemp.setText("Carregando...");
+        tvCityTemp.setText(getString(R.string.carregando));
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -91,8 +93,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(KEY_UNITS, currentUnit);
             startActivity(intent);
         }else{
-            Toast.makeText(MainActivity.this, "Aguarde, buscando dados do clima...", Toast.LENGTH_SHORT).show();
-        }
+                Toast.makeText(MainActivity.this, getString(R.string.toast_aguarde), Toast.LENGTH_SHORT).show();        }
     });
 
         btnConfiguracao = findViewById(R.id.btn_configuracao);
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchWeatherData(String city){
 
-        tvCityTemp.setText("Carregando...");
+        tvCityTemp.setText(getString(R.string.carregando));
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(WeatherService.BASE_URL)
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         WeatherService service = retrofit.create(WeatherService.class);
 
         // A linguagem ainda está fixa, mas a unidade agora é dinâmica
-        String lang = WeatherService.LANG; // "pt_br"
+        //String lang = WeatherService.LANG; // "pt_br"
 
         service.getCurrentWeather(city, WeatherService.API_KEY, currentUnit,
                 currentLang).enqueue(new Callback<WeatherResponse>() {
@@ -199,18 +200,19 @@ public class MainActivity extends AppCompatActivity {
                     updateUI(weatherData);
                 }else{
                     tvWeatherIcon.setImageResource(R.drawable.ic_weather_error);
-                    tvCityTemp.setText("Erro API");
-                    Toast.makeText(MainActivity.this, "Erro ao buscar dados do clima. " +
-                            "Código: " + response.code(), Toast.LENGTH_SHORT).show();
-                            //O erro 401 ou 404 Chave/Cidade errada
+                    tvCityTemp.setText(getString(R.string.toast_erro_api));
+
+                    String erroMsg = getString(R.string.toast_erro_api) + " Código: " + response.code();
+                    Toast.makeText(MainActivity.this, erroMsg, Toast.LENGTH_SHORT).show();
+
                 }
             }
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Log.e("API_ERROR", "Falha na conexão: " + t.getMessage());
                 tvWeatherIcon.setImageResource(R.drawable.ic_weather_error);
-                tvCityTemp.setText("Sem Conexão");
-                Toast.makeText(MainActivity.this, "Erro de rede. Verifique sua Conexão.",
+                tvCityTemp.setText(getString(R.string.toast_sem_conexao));
+                Toast.makeText(MainActivity.this, getString(R.string.toast_erro_rede),
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -223,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         // Define o símbolo da unidade
         String unitSymbol = currentUnit.equals(UNITS_METRIC) ? "°C" : "°F";
 
-        String temp = String.format("%.0f%s", data.getMain().getCurrentTemp(), unitSymbol);
+        String temp = String.format(Locale.getDefault(), "%.0f%s", data.getMain().getCurrentTemp(), unitSymbol);
 
         tvCityTemp.setText(cityName + ", " + countryCode + "\n" + temp);
 
@@ -254,10 +256,10 @@ public class MainActivity extends AppCompatActivity {
                 backgroundDrawable = R.drawable.gradient_neve; // Chuva congelante
 
             } else if (weatherId >= 520 && weatherId <= 531) {
-                backgroundDrawable = R.drawable.gradient_chuvoso; // Chuva forte
+                backgroundDrawable = R.drawable.gradient_chuva_leve; // Chuva forte
 
             } else {
-                backgroundDrawable = R.drawable.gradient_chuva_leve;
+                backgroundDrawable = R.drawable.gradient_chuvoso;
             }
 
         } else if (weatherId >= 600 && weatherId <= 622) { // Neve

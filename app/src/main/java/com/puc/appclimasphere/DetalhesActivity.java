@@ -89,21 +89,23 @@ public class DetalhesActivity extends AppCompatActivity {
                         double maxTemp = data.getMain().getMaxTemp();
 
                         if (tvDetalhesCidade != null) {
-                            tvDetalhesCidade.setText(cityCountry + " - " + temp + " (" + description + ")");
+                            tvDetalhesCidade.setText(getString(R.string.detalhes_cidade_formato, cityCountry, temp, description));
                         }
                         if (tvSensacao != null) {
-                            tvSensacao.setText(String.format(Locale.getDefault(),"Sensação Térmica: %.0f%s", data.getMain().getFeelsLike(), unitSymbol));
+                            tvSensacao.setText(getString(R.string.label_sensacao, data.getMain().getFeelsLike(), unitSymbol));
                         }
                         if (tvUmidade != null) {
-                            tvUmidade.setText(String.format(Locale.getDefault(),"Umidade: %d%%", data.getMain().getHumidity()));
+                            tvUmidade.setText(getString(R.string.label_umidade, data.getMain().getHumidity()));
                         }
                         if (tvPressao != null) {
-                            tvPressao.setText(String.format(Locale.getDefault(),"Pressão: %d hPa", data.getMain().getPressure()));
+                            tvPressao.setText(getString(R.string.label_pressao, data.getMain().getPressure()));
                         }
 
                         // Esta é a verificação crucial que impede o crash
                         if (tvTempMinMax != null) {
-                            tvTempMinMax.setText(String.format(Locale.getDefault(),"Mínima/Máxima: %.0f%s / %.0f%s", minTemp, unitSymbol, maxTemp, unitSymbol));
+
+                            tvTempMinMax.setText(getString(R.string.label_min_max, minTemp, unitSymbol, maxTemp, unitSymbol));
+
                         } else {
                             // Se ele for nulo, saberemos pelo Logcat
                             Log.e("DetalhesActivity", "ERRO FATAL: tvTempMinMax é NULL. Verifique o ID no XML e limpe o cache.");
@@ -123,11 +125,11 @@ public class DetalhesActivity extends AppCompatActivity {
             // Caso não tenha dados na Intent usar dados mockados para teste
             setMockData(tvDetalhesCidade, tvSensacao, tvUmidade, tvPressao, tvTempMinMax);
 
-//            tvDetalhesCidade.setText("São Paulo, BR (Sem dados API)");
-//            tvSensacao.setText("Sensação Térmica: --");
-//            tvUmidade.setText("Umidade: --");
-//            tvPressao.setText("Pressão: --");
-//            tvTempMinMax.setText("Mínima/Máxima: --");
+//        tvCidade.setText(getString(R.string.mock_sem_dados_api));
+//        tvSensacao.setText(String.format(Locale.getDefault(), getString(R.string.mock_sensacao), unitSymbol));
+//        tvUmidade.setText(getString(R.string.mock_umidade));
+//        tvPressao.setText(getString(R.string.mock_pressao));
+//        tvTempMinMax.setText(String.format(Locale.getDefault(), getString(R.string.mock_min_max), unitSymbol, unitSymbol));
         }
 
         btnVoltarDet = findViewById(R.id.btnVoltarDet);

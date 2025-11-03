@@ -1,9 +1,53 @@
 <resources>
     <string name="app_name">ClimaSphere</string>
 
-    <string-array name="languages_array">
-        <item>Português (Brasil)</item>
-        <item>Inglês (EUA)</item>
-        <item>Espanhol</item>
-    </string-array>
+    <string name="btn_voltar_menu">Voltar ao Menu Principal</string>
+    <string name="carregando">Carregando...</string>
+
+    <string name="main_detalhes">Detalhes da Previsão</string>
+    <string name="main_cidade">Seleção de Cidade</string>
+    <string name="main_periodo">Seleção de Período de Amostra</string>
+    <string name="main_config">Configurações</string>
+    <string name="toast_aguarde">Aguarde, buscando dados do clima...</string>
+    <string name="toast_erro_api">Erro API</string>
+    <string name="toast_sem_conexao">Sem Conexão</string>
+    <string name="toast_erro_rede">Erro de rede. Verifique sua Conexão.</string>
+
+    <string name="titulo_detalhes">Detalhes do Clima</string>
+    <string name="detalhes_cidade_formato">%1$s - %2$s (%3$s)</string>
+    <string name="label_sensacao">Sensação Térmica: %1$.0f%2$s</string>
+    <string name="label_umidade">Umidade: %1$d%%</string>
+    <string name="label_pressao">Pressão: %1$d hPa</string>
+    <string name="label_min_max">Mínima/Máxima: %1$.0f%2$s / %3$.0f%4$s</string>
+    <string name="toast_dados_incompletos">Erro: Dados do clima incompletos.</string>
+    <string name="toast_erro_critico">Erro crítico ao carregar detalhes. Verifique a API Key.</string>
+    <string name="toast_erro_formato">Erro no formato dos dados de clima.</string>
+    <string name="mock_sem_dados_api">São Paulo, BR (Sem dados API)</string>
+    <string name="mock_sensacao">Sensação Térmica: --%s</string>
+    <string name="mock_umidade">Umidade: --%</string>
+    <string name="mock_pressao">Pressão: -- hPa</string>
+    <string name="mock_min_max">Mínima/Máxima: --%s / --%s</string>
+
+
+    <string name="titulo_config">Configurações</string>
+    <string name="label_unidade">Unidade de Temperatura</string>
+    <string name="label_celsius">Celsius (°C)</string>
+    <string name="label_fahrenheit">Fahrenheit (°F)</string>
+    <string name="label_idioma">Idioma do App</string>
+    <string name="idioma_pt">Português (Brasil)</string>
+    <string name="idioma_en">English</string>
+    <string name="idioma_es">Español</string>
+
+    <string name="titulo_cidade">Definir Localidade</string>
+    <string name="label_buscar_cidade">Buscar Cidade</string>
+    <string name="hint_digite_cidade">Digite o nome da cidade...</string>
+    <string name="btn_buscar">Buscar</string>
+    <string name="label_sugeridas">Cidades Sugeridas</string>
+    <string name="erro_digite_cidade">Digite o nome da cidade</string>
+
+    <string name="titulo_periodo">Seleção de Período</string>
+    <string name="label_horizonte">Selecione o Horizonte da Previsão</string>
+    <string name="label_semanal">Semanal (7 Dias)</string>
+    <string name="label_quinzenal">Quinzenal (15 Dias)</string>
+    <string name="label_mensal">Mensal (30 Dias)</string>
 </resources>
