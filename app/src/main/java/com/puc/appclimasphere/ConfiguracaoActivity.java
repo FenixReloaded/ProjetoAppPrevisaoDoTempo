@@ -44,7 +44,6 @@ public class ConfiguracaoActivity extends BaseActivity {
 
     private Spinner spinnerIdioma;
 
-    // Mapeamento: Nomes no Spinner -> Códigos da API
     private String[] displayLanguages;
     private final String[] apiLangCodes = {LANG_PT_BR, LANG_EN, LANG_ES};
 
@@ -68,13 +67,13 @@ public class ConfiguracaoActivity extends BaseActivity {
                 getString(R.string.idioma_es)
         };
 
-        // IDs do seu R.layout.activity_configuracao
+        // IDs do R.layout.activity_configuracao
         rgUnidade = findViewById(R.id.rg_unidade);
         rbCelsius = findViewById(R.id.rb_celsius);
         rbFahrenheit = findViewById(R.id.rb_fahrenheit);
         spinnerIdioma = findViewById(R.id.spinner_idioma);
 
-        // 1. Configura o Adapter (a lista de itens) para o Spinner
+        // Configura o Adapter (a lista de itens) para o Spinner
         ArrayAdapter<String> langAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item, // Layout padrão
@@ -98,20 +97,18 @@ public class ConfiguracaoActivity extends BaseActivity {
             editor.apply(); // Salva a alteração
         });
 
-
-
-
-        // 2. Define o Listener para salvar a escolha
+        // Define o Listener para salvar a escolha
         spinnerIdioma.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedLangCode = apiLangCodes[position];
 
-                // Pega o idioma ATUALMENTE salvo
+                // Pega o idioma atualmente salvo
                 String currentLang = sharedPreferences.getString(KEY_LANG, LANG_PT_BR);
 
                 // Só reinicia se o usuário ESCOLHEU um idioma DIFERENTE
                 if (!currentLang.equals(selectedLangCode)) {
+
                     // Salva o novo idioma
                     sharedPreferences.edit().putString(KEY_LANG, selectedLangCode).apply();
 
@@ -122,7 +119,6 @@ public class ConfiguracaoActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Não faz nada
             }
         });
 

@@ -26,7 +26,6 @@ public class DetalhesActivity extends AppCompatActivity {
     Button btnVoltarDet;
     public static final String EXTRA_WEATHER_DATA = "WEATHER_DATA";
     private static final String EXTRA_TEMA_FUNDO = "TEMA_FUNDO";
-
     private String unitSymbol = "°C"; // Padrão
 
     @Override
@@ -58,8 +57,6 @@ public class DetalhesActivity extends AppCompatActivity {
         TextView tvTempMinMax = findViewById(R.id.tv_temp_min_max);
 
         Bundle extras = getIntent().getExtras();
-
-        // Início da zona crítica
 
         // Define o símbolo da unidade (C ou F)
         if (extras != null) {
@@ -101,13 +98,11 @@ public class DetalhesActivity extends AppCompatActivity {
                             tvPressao.setText(getString(R.string.label_pressao, data.getMain().getPressure()));
                         }
 
-                        // Esta é a verificação crucial que impede o crash
                         if (tvTempMinMax != null) {
 
                             tvTempMinMax.setText(getString(R.string.label_min_max, minTemp, unitSymbol, maxTemp, unitSymbol));
 
                         } else {
-                            // Se ele for nulo, saberemos pelo Logcat
                             Log.e("DetalhesActivity", "ERRO FATAL: tvTempMinMax é NULL. Verifique o ID no XML e limpe o cache.");
                         }
                     } else {
@@ -124,12 +119,6 @@ public class DetalhesActivity extends AppCompatActivity {
         } else {
             // Caso não tenha dados na Intent usar dados mockados para teste
             setMockData(tvDetalhesCidade, tvSensacao, tvUmidade, tvPressao, tvTempMinMax);
-
-//        tvCidade.setText(getString(R.string.mock_sem_dados_api));
-//        tvSensacao.setText(String.format(Locale.getDefault(), getString(R.string.mock_sensacao), unitSymbol));
-//        tvUmidade.setText(getString(R.string.mock_umidade));
-//        tvPressao.setText(getString(R.string.mock_pressao));
-//        tvTempMinMax.setText(String.format(Locale.getDefault(), getString(R.string.mock_min_max), unitSymbol, unitSymbol));
         }
 
         btnVoltarDet = findViewById(R.id.btnVoltarDet);

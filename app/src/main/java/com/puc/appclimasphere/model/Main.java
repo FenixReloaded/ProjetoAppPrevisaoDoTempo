@@ -24,9 +24,6 @@ public class Main implements Serializable {
     @SerializedName("pressure")
     private int pressure;
 
-
-
-
     public int getPressure() {
         return pressure;
     }
@@ -42,7 +39,6 @@ public class Main implements Serializable {
     public double getCurrentTemp() {
         return currentTemp;
     }
-
 
     public double getMinTemp() {
         return minTemp != null ? minTemp : getCurrentTemp();

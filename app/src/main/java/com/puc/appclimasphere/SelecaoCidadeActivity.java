@@ -1,7 +1,6 @@
 package com.puc.appclimasphere;
 
 import android.content.Intent;
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,9 +45,6 @@ public class SelecaoCidadeActivity extends BaseActivity {
             return insets;
         });
 
-        // Você precisa inicializar as variáveis antes de usá-las.
-        // Assumindo que os IDs no seu XML são os que discutimos:
-
         // IDs do XML
         etCidadeBusca = findViewById(R.id.et_cidade_busca);
 
@@ -71,14 +67,14 @@ public class SelecaoCidadeActivity extends BaseActivity {
                     // Se o texto não estiver vazio, retorna a cidade
                     retornarCidadeSelecionada(cidade);
                 } else {
-                    // <-- MUDANÇA: Usando getString() para traduzir o erro
+                    // Usando getString() para traduzir o erro
                     etCidadeBusca.setError(getString(R.string.erro_digite_cidade));
                 }
             });
         }
 
-        // 4. Ações das cidades sugeridas (com base nos textos da imagem)
-        // Usamos null-checks caso você remova alguma sugestão do layout
+        // Ações das cidades sugeridas (predefindas)
+
         if (tvSugestao1 != null) {
             tvSugestao1.setOnClickListener(v -> retornarCidadeSelecionada("São Paulo"));
         }
@@ -104,7 +100,7 @@ public class SelecaoCidadeActivity extends BaseActivity {
         // Coloca o nome da cidade no Intent
         resultIntent.putExtra(EXTRA_NEW_CITY, cidade);
 
-        // Define o resultado como SUCESSO (RESULT_OK) e envia o Intent
+        // Define o resultado como sucesso (RESULT_OK) e envia o Intent
         setResult(AppCompatActivity.RESULT_OK, resultIntent);
 
         // Fecha a SelecaoCidadeActivity e retorna para a MainActivity

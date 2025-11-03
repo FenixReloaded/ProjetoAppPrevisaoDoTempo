@@ -48,4 +48,11 @@
     <string name="label_semanal">Semanal (7 Días)</string>
     <string name="label_quinzenal">Quincenal (15 Días)</string>
     <string name="label_mensal">Mensual (30 Días)</string>
+
+    <string name="titulo_previsao_semanal">Previsión Semanal</string>
+    <string name="titulo_previsao_quinzenal">Previsión Quincenal</string>
+    <string name="formato_data_curta">dd/MM, EEE</string>
+    <string name="formato_temp_min_max">%.0f%s / %.0f%s</string>
+    <string name="toast_erro_buscar_coords">Error al buscar coordenadas para %s</string>
+    <string name="toast_erro_buscar_previsao">Error al buscar la previsión del tiempo</string>
 </resources>

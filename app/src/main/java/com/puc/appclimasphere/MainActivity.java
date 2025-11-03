@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -114,16 +113,20 @@ public class MainActivity extends BaseActivity {
         btnSelecaoPeriodo.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SelecaoPeriodoActivity.class);
             intent.putExtra("TEMA_FUNDO", currentBackgroundId);
+
+            // Passa o nome da cidade atual para a próxima tela
+            intent.putExtra("CURRENT_CITY", currentCity);
+
             startActivity(intent);
         });
     }
 
-    // Registra o "escutador" que vai receber a cidade de volta da SelecaoCidadeActivity
+    // Registra o Listener que vai receber a cidade de volta da SelecaoCidadeActivity
     private void registrarLauncherSelecaoCidade() {
         selecaoCidadeLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    // Verifica se a activity retornou com SUCESSO (RESULT_OK)
+                    // Verifica se a activity retornou com sucesso (RESULT_OK)
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK && result.getData() != null) {
 
                         // Pega a string da cidade que foi enviada de volta
@@ -135,9 +138,6 @@ public class MainActivity extends BaseActivity {
                             // Atualiza a cidade atual
                             currentCity = newCity;
 
-                            // O método onResume() será chamado automaticamente após
-                            // o retorno à MainActivity, e ele já chama o fetchWeatherData().
-                            // Não é necessário chamar fetchWeatherData() aqui.
                         }
                     }
                 }
@@ -160,19 +160,13 @@ public class MainActivity extends BaseActivity {
 
         // Lê o idioma salvo, usando "pt_br" como padrão
         String savedLang = sharedPreferences.getString(KEY_LANG, LANG_PT_BR);
-        // --- FIM CÓDIGO NOVO ---
 
-        // --- LÓGICA ATUALIZADA ---
-        // Se a unidade MUDOU, ou se o idioma MUDOU,
-        // ou se for a primeira vez (cachedWeatherData == null),
-        // então buscamos os dados da API.
+        // Se a unidade MUDOU, ou se o idioma MUDOU, ou se for a primeira vez (cachedWeatherData == null), então buscamos os dados da API.
         if (!savedUnit.equals(currentUnit) || !savedLang.equals(currentLang) || cachedWeatherData == null) {
             currentUnit = savedUnit;
             currentLang = savedLang; // Salva o idioma atual
             fetchWeatherData(currentCity);
         }
-        // Se nada mudou e já temos dados, não fazemos nada,
-        // pois a UI já está atualizada.
     }
 
     private void fetchWeatherData(String city){
@@ -185,9 +179,6 @@ public class MainActivity extends BaseActivity {
                 .build();
 
         WeatherService service = retrofit.create(WeatherService.class);
-
-        // A linguagem ainda está fixa, mas a unidade agora é dinâmica
-        //String lang = WeatherService.LANG; // "pt_br"
 
         service.getCurrentWeather(city, WeatherService.API_KEY, currentUnit,
                 currentLang).enqueue(new Callback<WeatherResponse>() {
@@ -220,7 +211,6 @@ public class MainActivity extends BaseActivity {
     private void updateUI(WeatherResponse data) {
         String cityName = data.getCityName();
         String countryCode = data.getSys() != null ? data.getSys().getCountryCode() : "";
-
 
         // Define o símbolo da unidade
         String unitSymbol = currentUnit.equals(UNITS_METRIC) ? "°C" : "°F";
@@ -256,10 +246,10 @@ public class MainActivity extends BaseActivity {
                 backgroundDrawable = R.drawable.gradient_neve; // Chuva congelante
 
             } else if (weatherId >= 520 && weatherId <= 531) {
-                backgroundDrawable = R.drawable.gradient_chuva_leve; // Chuva forte
+                backgroundDrawable = R.drawable.gradient_chuva_leve; // Chuva leve
 
             } else {
-                backgroundDrawable = R.drawable.gradient_chuvoso;
+                backgroundDrawable = R.drawable.gradient_chuvoso; // Chuva forte
             }
 
         } else if (weatherId >= 600 && weatherId <= 622) { // Neve
@@ -275,33 +265,8 @@ public class MainActivity extends BaseActivity {
             backgroundDrawable = R.drawable.gradient_nublado;
         }
 
-        // LÓGICA DO ÍCONE
-        // Mapeia a string "01d", "01n",..., para o R.drawable.ic_XXd2x.png
-        switch (iconId) {
-            case "01d": iconResId = R.drawable.ic_01d2x; break;
-            case "01n": iconResId = R.drawable.ic_01n2x; break;
-            case "02d": iconResId = R.drawable.ic_02d2x; break;
-            case "02n": iconResId = R.drawable.ic_02n2x; break;
-            case "03d": iconResId = R.drawable.ic_03d2x; break;
-            case "03n": iconResId = R.drawable.ic_03n2x; break;
-            case "04d": iconResId = R.drawable.ic_04d2x; break;
-            case "04n": iconResId = R.drawable.ic_04n2x; break;
-            case "09d": iconResId = R.drawable.ic_09d2x; break;
-            case "09n": iconResId = R.drawable.ic_09n2x; break;
-            case "10d": iconResId = R.drawable.ic_10d2x; break;
-            case "10n": iconResId = R.drawable.ic_10n2x; break;
-            case "11d": iconResId = R.drawable.ic_11d2x; break;
-            case "11n": iconResId = R.drawable.ic_11n2x; break;
-            case "13d": iconResId = R.drawable.ic_13d2x; break;
-            case "13n": iconResId = R.drawable.ic_13n2x; break;
-            case "50d": iconResId = R.drawable.ic_50d2x; break;
-            case "50n": iconResId = R.drawable.ic_50n2x; break;
-            default:
-
-                // Fallback caso a API envie um código desconhecido
-                iconResId = isNight ? R.drawable.ic_01n2x : R.drawable.ic_01d2x;
-                break;
-        }
+        // Chamada da logica do icone
+        iconResId = WeatherIconMapper.getIconResourceId(iconId);
 
         currentBackgroundId = backgroundDrawable;
 

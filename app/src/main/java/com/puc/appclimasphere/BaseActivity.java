@@ -18,11 +18,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        // Aplica o idioma ANTES de chamar super.onCreate() ou setContentView()
+        // Aplica o idioma antes de chamar super.onCreate() ou setContentView()
         aplicarIdiomaSalvo();
         super.onCreate(savedInstanceState);
     }
-
 
     // Lê o SharedPreferences e define o idioma do app
     private void aplicarIdiomaSalvo() {
@@ -33,7 +32,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (savedLang.equals("pt_br")) {
             savedLang = "pt-BR"; // O Android usa o formato BCP 47
         }
-        // "en" e "es" já funcionam
 
         LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(savedLang);
         AppCompatDelegate.setApplicationLocales(appLocale);

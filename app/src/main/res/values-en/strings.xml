@@ -39,4 +39,10 @@
     <string name="label_semanal">Weekly (7 Days)</string>
     <string name="label_quinzenal">Biweekly (15 Days)</string>
     <string name="label_mensal">Monthly (30 Days)</string>
+    <string name="titulo_previsao_semanal">Weekly Forecast</string>
+    <string name="titulo_previsao_quinzenal">15-Day Forecast</string>
+    <string name="formato_data_curta">MM/dd, EEE</string>
+    <string name="formato_temp_min_max">%.0f%s / %.0f%s</string>
+    <string name="toast_erro_buscar_coords">Error fetching coordinates for %s</string>
+    <string name="toast_erro_buscar_previsao">Error fetching weather forecast</string>
 </resources>
