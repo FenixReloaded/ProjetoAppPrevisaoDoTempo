@@ -1,0 +1,58 @@
+<resources>
+    <string name="btn_voltar_menu">Volver al Menú Principal</string>
+    <string name="carregando">Cargando...</string>
+
+    <string name="main_detalhes">Detalles de la Previsión</string>
+    <string name="main_cidade">Selección de Ciudad</string>
+    <string name="main_periodo">Selección de Período de Muestra</string>
+    <string name="main_config">Configuración</string>
+    <string name="toast_aguarde">Espere, buscando datos del clima...</string>
+    <string name="toast_erro_api">Error de API</string>
+    <string name="toast_sem_conexao">Sin Conexión</string>
+    <string name="toast_erro_rede">Error de red. Verifique su Conexión.</string>
+
+    <string name="titulo_detalhes">Detalles del Clima</string>
+    <string name="detalhes_cidade_formato">%1$s - %2$s (%3$s)</string>
+    <string name="label_sensacao">Sensación Térmica: %1$.0f%2$s</string>
+    <string name="label_umidade">Humedad: %1$d%%</string>
+    <string name="label_pressao">Presión: %1$d hPa</string>
+    <string name="label_min_max">Mínima/Máxima: %1$.0f%2$s / %3$.0f%4$s</string>
+    <string name="toast_dados_incompletos">Error: Datos del clima incompletos.</string>
+    <string name="toast_erro_critico">Error crítico al cargar detalles. Verifique la clave de API.</string>
+    <string name="toast_erro_formato">Error en el formato de datos del clima.</string>
+    <string name="mock_sem_dados_api">São Paulo, BR (Sin datos API)</string>
+    <string name="mock_sensacao">Sensación Térmica: --%s</string>
+    <string name="mock_umidade">Humedad: --%</string>
+    <string name="mock_pressao">Presión: -- hPa</string>
+    <string name="mock_min_max">Mínima/Máxima: --%s / --%s</string>
+
+
+    <string name="titulo_config">Configuración</string>
+    <string name="label_unidade">Unidad de Temperatura</string>
+    <string name="label_celsius">Celsius (°C)</string>
+    <string name="label_fahrenheit">Fahrenheit (°F)</string>
+    <string name="label_idioma">Idioma de la App</string>
+    <string name="idioma_pt">Português (Brasil)</string>
+    <string name="idioma_en">English</string>
+    <string name="idioma_es">Español</string>
+
+    <string name="titulo_cidade">Definir Ubicación</string>
+    <string name="label_buscar_cidade">Buscar Ciudad</string>
+    <string name="hint_digite_cidade">Escriba el nombre de la ciudad...</string>
+    <string name="btn_buscar">Buscar</string>
+    <string name="label_sugeridas">Ciudades Sugeridas</string>
+    <string name="erro_digite_cidade">Escriba el nombre de la ciudad</string>
+
+    <string name="titulo_periodo">Selección de Período</string>
+    <string name="label_horizonte">Seleccione el Horizonte de la Previsión</string>
+    <string name="label_semanal">Semanal (7 Días)</string>
+    <string name="label_quinzenal">Quincenal (15 Días)</string>
+    <string name="label_mensal">Mensual (30 Días)</string>
+
+    <string name="titulo_previsao_semanal">Previsión Semanal</string>
+    <string name="titulo_previsao_quinzenal">Previsión Quincenal</string>
+    <string name="formato_data_curta">dd/MM, EEE</string>
+    <string name="formato_temp_min_max">%.0f%s / %.0f%s</string>
+    <string name="toast_erro_buscar_coords">Error al buscar coordenadas para %s</string>
+    <string name="toast_erro_buscar_previsao">Error al buscar la previsión del tiempo</string>
+</resources>
