@@ -1,6 +1,7 @@
 ClimaSphere - Aplicativo de Previsão do Tempo (Android Nativo)
-
-(Sugestão: Use a sua imagem image_bc5da7.png como a imagem de cabeçalho do seu repositório)
+<p align="center">
+<img width="300" height="300" alt="logoApp" src="https://github.com/user-attachments/assets/09081571-8606-46eb-99de-d89135150ff6" />
+</p>
 
 🎯 Sobre o Projeto
 
