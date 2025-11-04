@@ -14,7 +14,7 @@ public interface WeatherService {
 
     String BASE_URL = "https://api.openweathermap.org/";
 
-    String API_KEY = "f6c7af85334187e893b76e24c6f4c0ff"; // Chave da API
+    String API_KEY = ""; // Chave da API
     String UNITS = "metric";
     String LANG = "pt_br";
 

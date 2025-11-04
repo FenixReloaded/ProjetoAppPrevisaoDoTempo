@@ -225,7 +225,7 @@ public class MainActivity extends BaseActivity {
     }
 
     // Método para decidir o degradê e o ícone
-    private void setWeatherTheme(int weatherId, String iconId) {
+    private void setWeatherTheme(int weatherId, String iconId) {  // ******** CORRIGIR ESSA FUNÇÃO, TEM PARAMETROS ERRADOS PARA SETAR OS TEMAS DE ACORDO COM A CONDICAO METERIOLOGICA, ESPECIFICAR MAIS ********
 
         int backgroundDrawable;
         int iconResId; // ID do recurso para o icone da condicao climatica
