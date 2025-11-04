@@ -1,68 +1,124 @@
-# ProjetoAppPrevisaoDoTempo
+ClimaSphere - Aplicativo de Previsão do Tempo (Android Nativo)
 
-☁️ ClimaSphere - Protótipo de Aplicativo de Previsão do Tempo (Android Nativo)
+(Sugestão: Use a sua imagem image_bc5da7.png como a imagem de cabeçalho do seu repositório)
 
 🎯 Sobre o Projeto
 
-O ClimaSphere é um protótipo de aplicativo mobile desenvolvido em Java/Android Nativo focado em oferecer uma experiência visual dinâmica e uma navegação clara entre as informações de previsão do tempo.
+O ClimaSphere é um aplicativo meteorológico funcional e robusto desenvolvido em Java para a plataforma Android Nativa. O projeto vai além de uma simples exibição de dados, focando em uma arquitetura de software escalável, personalização completa do usuário e internacionalização (i18n) dinâmica.
 
-Este projeto foi desenvolvido como parte do projeto da matéria DAM, com ênfase na arquitetura de múltiplas Activitys e na integração com serviços externos (API).
+O aplicativo consome múltiplos endpoints da API OpenWeather, gerencia o estado do usuário de forma persistente através de SharedPreferences e implementa uma arquitetura de UI responsiva e temática que se adapta às condições climáticas.
 
-✨ Funcionalidades Destaque
+Este projeto foi desenvolvido como um trabalho acadêmico, demonstrando a implementação de fluxos de dados assíncronos complexos, arquitetura de múltiplas Activitys e gerenciamento de estado em tempo de execução.
 
-    Tema Dinâmico Dia/Noite: O fundo da tela principal se adapta automaticamente ao clima e ao horário atual (dia ou noite) da cidade, utilizando degradês personalizados.
+✨ Funcionalidades Implementadas
 
-    Integração com API: Utiliza a OpenWeatherMap API para buscar dados reais e atualizar a interface do usuário em tempo real.
+    Módulo de Previsão Estendida (7/15 Dias): Implementação de um fluxo de API encadeado. Ao selecionar um período, o app primeiro chama a API de Geocodificação para converter o nome da cidade em coordenadas (lat/lon) e, em seguida, chama a API de Previsão Diária (16 Dias). Os resultados são exibidos em uma nova tela (ForecastActivity) com uma lista RecyclerView.
 
-    Navegação Complexa: Apresenta 5 telas navegáveis, demonstrando o fluxo completo da aplicação.
+    Internacionalização (i18n) Dinâmica: O aplicativo suporta três idiomas (Português, Inglês e Espanhol). A seleção de idioma na tela de configurações salva a preferência e reinicia o aplicativo (Intent.FLAG_ACTIVITY_CLEAR_TOP), forçando o sistema a carregar os arquivos de recursos (strings.xml) corretos.
 
-    Design Customizado: Implementação de estilos personalizados (drawables) para botões e cartões de informação, superando conflitos de tema do Android.
+    Arquitetura BaseActivity: Para suportar a internacionalização, uma classe abstract BaseActivity foi criada. Todas as Activitys principais herdam dela, garantindo que a lógica de aplicação de idioma (AppCompatDelegate.setApplicationLocales) seja executada antes de qualquer UI ser renderizada.
 
-📱 Telas e Navegação
+    Gerenciamento de Estado Persistente: A ConfiguracaoActivity permite ao usuário definir e salvar suas preferências de Unidade de Medida (Celsius/Fahrenheit) e Idioma. Essas preferências são salvas em SharedPreferences e lidas pela MainActivity e SelecaoPeriodoActivity para modificar as chamadas de API.
 
-O protótipo é composto por 5 Activitys principais:
+    Temas de UI Dinâmicos: A tela principal (MainActivity) analisa o weatherId e o iconId (ex: "01n") recebidos da API. Com base nessas condições, ela aplica Drawables de degradê customizados (ex: gradient_noite, gradient_chuvoso, gradient_neve) ao fundo da tela, oferecendo um feedback visual imersivo.
 
-    MainActivity (Home): Exibe o clima atual (ícone e temperatura) e gerencia a navegação para as demais telas.
+    Seleção de Cidade (com ActivityResultLauncher): O app implementa o fluxo moderno de comunicação entre Activitys. A MainActivity registra um launcher, e a SelecaoCidadeActivity captura a cidade (seja do EditText ou das sugestões) e retorna o dado para a MainActivity usando setResult(AppCompatActivity.RESULT_OK, ...).
 
-    DetalhesActivity: Exibe dados meteorológicos detalhados (umidade, pressão, sensação térmica, min/máx) recebidos via serialização (Serializable) da API.
+    Design Responsivo (LinearLayout + layout_weight): Todos os layouts XML foram refatorados para serem responsivos. A técnica utiliza layout_width="match_parent" com layout_marginHorizontal para espaçamento, e um <View ... layout_weight="1" /> invisível para empurrar os botões de navegação para a parte inferior da tela, garantindo uma boa aparência em qualquer proporção de tela.
 
-    ConfiguracaoActivity: Permite ajustes em unidades de medida e idioma (protótipo funcional).
+    Código Centralizado (DRY): A lógica de mapeamento de ícones da API (ex: "10d" -> R.drawable.ic_10d2x) foi extraída para uma classe utilitária, WeatherIconMapper.java, que é usada tanto pela MainActivity quanto pelo ForecastAdapter.
 
-    SelecaoCidadeActivity: Simula o campo de busca e seleção de uma nova cidade.
+📱 Arquitetura e Telas
 
-    SelecaoPeriodoActivity: Permite a seleção do horizonte temporal da previsão (Semanal/Quinzenal/Mensal).
+O aplicativo é composto por 6 Activitys principais e uma arquitetura de Adapter customizado.
 
-🛠️ Tecnologias Utilizadas
+    MainActivity (Home):
+
+        Função: Tela principal e hub de navegação.
+
+        Lógica: Chama getCurrentWeather, exibe os dados e aplica o tema de fundo dinâmico. Gerencia o ActivityResultLauncher para a seleção de cidade.
+
+    DetalhesActivity:
+
+        Função: Exibe informações detalhadas do clima atual (Sensação, Umidade, Pressão, etc.).
+
+        Lógica: Recebe o objeto WeatherResponse serializado via Intent da MainActivity. Formata e exibe os dados.
+
+    ConfiguracaoActivity:
+
+        Função: Tela de configurações de Unidade e Idioma.
+
+        Lógica: Atua como escritora principal das SharedPreferences. Gerencia o reinício do aplicativo (reiniciarApp()) após a troca de idioma.
+
+    SelecaoCidadeActivity:
+
+        Função: Tela de busca e seleção de cidade.
+
+        Lógica: Captura a entrada do usuário (via EditText ou sugestões de TextView) e retorna a string da cidade para a MainActivity via setResult(RESULT_OK).
+
+    SelecaoPeriodoActivity:
+
+        Função: Tela de seleção de período (Semanal, Quinzenal, Mensal).
+
+        Lógica: Inicia o fluxo de API encadeado. Recebe currentCity da MainActivity. Ao clique, chama getCoordinates e, no callback de sucesso, chama getDailyForecast.
+
+    ForecastActivity:
+
+        Função: Exibe a lista de previsão de 7 ou 15 dias.
+
+        Lógica: Contém um RecyclerView. Recebe a List<DailyForecast> serializada da SelecaoPeriodoActivity e a configura com o ForecastAdapter.
+
+    ForecastAdapter:
+
+        Função: Adapter customizado que gerencia a lista do RecyclerView.
+
+        Lógica: Recebe a lista de dados. Em onBindViewHolder, ele formata o timestamp Unix para uma data legível (ex: "03/11, Seg") e mapeia os ícones usando WeatherIconMapper.
+
+🛠️ Tecnologias e Bibliotecas
 
     Linguagem: Java
 
-    Plataforma: Android Nativo (Android Studio)
+    Plataforma: Android Nativo
 
-    Comunicação de Rede: Retrofit 2.x e GSON
+    Comunicação de Rede: Retrofit 2
 
-    API de Dados: OpenWeatherMap API (Current Weather)
+    Parsing de JSON: GSON (via GsonConverterFactory)
 
-    Estilização: Arquivos XML drawable customizados (<shape>, <gradient>) para degradês e arredondamento.
+    UI (Listas): RecyclerView e RecyclerView.Adapter customizado (ForecastAdapter).
 
-    Organização: Uso do ciclo de vida (onResume()) para otimizar a atualização de dados e minimizar o efeito de "piscada" (flicker).
+    UI (Layouts): LinearLayout com layout_weight e marginHorizontal para design responsivo.
 
-🚀 Como Rodar o Projeto
+    UI (Estilo): Drawables XML customizados (<shape>, <gradient>).
+
+    API de Dados: OpenWeatherMap (endpoints Current Weather, Geocoding API e 16-Day Daily Forecast).
+
+    Arquitetura: BaseActivity, ActivityResultLauncher, AppCompatDelegate (para i18n).
+
+    Gerenciamento de Estado: SharedPreferences.
+
+🚀 Como Executar o Projeto
 
     Clone o Repositório:
+    Bash
 
-    git clone [https://www.youtube.com/watch?v=6YQIWRyPxnk](https://www.youtube.com/watch?v=6YQIWRyPxnk)
+git clone https://[URL_DO_SEU_REPOSITORIO_AQUI].git
 
-    Obtenha a Chave da API:
+Obtenha a Chave da API:
 
-        Crie uma conta gratuita no OpenWeatherMap.
+    Crie uma conta no OpenWeatherMap.
 
-        Obtenha sua chave (APPID).
+    Assine o plano (ex: "Free for students") que dá acesso às APIs: Current Weather, Geocoding e Daily Forecast 16 days.
 
-    Configure a Chave:
+    Obtenha sua chave (APPID).
 
-        Abra o arquivo WeatherService.java (localizado em .../api/).
+Configure a Chave:
 
-        Substitua "SUA_CHAVE_AQUI" pela sua chave real:
+    Abra o projeto no Android Studio.
+
+    Navegue até o arquivo app/src/main/java/com/puc/appclimasphere/api/WeatherService.java.
+
+    Substitua a chave API_KEY pela sua chave real:
+    Java
 
         public interface WeatherService {
             // ...
@@ -72,16 +128,28 @@ O protótipo é composto por 5 Activitys principais:
 
     Sincronize e Execute:
 
-        Sincronize o projeto no Android Studio (Sync Now).
+        Sincronize o projeto (Sync Gradle).
 
-        Rode o aplicativo em um emulador ou dispositivo físico (é necessário acesso à internet para a API funcionar).
+        Execute o aplicativo em um emulador ou dispositivo físico (requer conexão com a internet).
 
-🤝 Contribuições
+📈 Trabalhos Futuros e Roadmap
 
-Este é um projeto de protótipo inicial. Sugestões e melhorias são bem-vindas, especialmente em relação à:
+Com base nos objetivos do projeto, a arquitetura atual permite as seguintes expansões futuras:
 
-    Refatoração para o uso de ViewModel e LiveData.
+    Localização Automática: Implementar o FusedLocationProviderClient para usar o GPS do dispositivo para a busca inicial de clima, em vez de um padrão fixo ("São Paulo").
 
-    Migração dos layouts para ConstraintLayout para maior flexibilidade.
+    Salvar Cidades Favoritas: Expandir as SharedPreferences ou implementar um banco de dados (Room/SQLite) para permitir que o usuário salve uma lista de cidades favoritas.
 
-    Implementação de uma barra de progresso (loading spinner) durante a busca da API.
+    Mapas e Gráficos: Utilizar a API "Weather Maps" para exibir camadas de mapa (precipitação, nuvens) e usar bibliotecas de gráficos (ex: MPAndroidChart) para plotar a previsão de 15 dias na ForecastActivity.
+
+    Área Informativa (Educacional): Criar uma nova Activity ou BottomSheet para explicar conceitos meteorológicos, como "O que é o índice UV e seus níveis de risco".
+
+    Notificações Climáticas: Implementar um WorkManager para tarefas em segundo plano que verifiquem alertas de mudanças climáticas relevantes e enviem notificações ao usuário.
+
+    Seleção de Período Mensal (Plano Pago): Habilitar o botão "Mensal" para chamar uma API de 30 dias, caso o aplicativo seja atualizado para um plano de API superior.
+
+🐞 Bugs Conhecidos
+
+    Refatoração Incompleta da DetalhesActivity: A tela DetalhesActivity atualmente não herda da BaseActivity e usa texto fixo em seu método setMockData. Isso impede que essa tela específica seja traduzida dinamicamente com o resto do aplicativo.
+
+    Pequeno ajuste na atribuição do ícones e fundos de tela em relação a condição meteriológica atual do local.
